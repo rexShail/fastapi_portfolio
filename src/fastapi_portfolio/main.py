@@ -1,11 +1,14 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
 templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
+static_directory = Path(__file__).parent / "static"
     
 app = FastAPI(title="FastAPI Portfolio", version="1.0.0")
+app.mount("/static", StaticFiles(directory=static_directory), name="static")
 
 posts: list[dict] = [
     {
@@ -52,7 +55,7 @@ posts: list[dict] = [
     },
 ]
 
-@app.get("/", response_class=HTMLResponse       )
+@app.get("/", response_class=HTMLResponse, name="home")
 def read_root(request: Request):
     return templates.TemplateResponse(
         request=request,

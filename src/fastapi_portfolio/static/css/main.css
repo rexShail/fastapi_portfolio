@@ -1,0 +1,18 @@
+body {
+    padding-top: 76px;
+    font-family: "Nunito", sans-serif;
+}
+
+.bg-steel {
+    background-color: #527c9f;
+}
+
+.site-header {
+    margin-bottom: 0;
+}
+
+.article-img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+}
