@@ -1,7 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.templating import Jinja2Templates
+from pathlib import Path
 
+templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
+    
 app = FastAPI(title="FastAPI Portfolio", version="1.0.0")
+
 posts: list[dict] = [
     {
         "id": 1,
@@ -17,13 +22,44 @@ posts: list[dict] = [
         "content": "Python combines readable syntax with a powerful ecosystem, making it a great choice for modern web development with FastAPI.",
         "date_posted": "October 29, 2026",
     },
+    {
+        "id": 3,
+        "author": "Aarav Singh",
+        "title": "Getting Started with REST API Design",
+        "content": "Good API design starts with clear resources, predictable URLs, consistent responses, and meaningful HTTP status codes.",
+        "date_posted": "October 30, 2026",
+    },
+    {
+        "id": 4,
+        "author": "Meera Patel",
+        "title": "Testing FastAPI Applications",
+        "content": "Automated tests help verify routes, validate response data, and catch regressions before changes reach production.",
+        "date_posted": "November 2, 2026",
+    },
+    {
+        "id": 5,
+        "author": "Shail",
+        "title": "Using Pydantic Models for Reliable Data",
+        "content": "Pydantic models make incoming request data easier to validate and outgoing response data more consistent.",
+        "date_posted": "November 5, 2026",
+    },
+    {
+        "id": 6,
+        "author": "Nisha Kapoor",
+        "title": "Deploying a FastAPI Service",
+        "content": "A successful deployment includes environment configuration, dependency management, health checks, and production logging.",
+        "date_posted": "November 8, 2026",
+    },
 ]
 
 @app.get("/", response_class=HTMLResponse       )
-def read_root():
-    return """
-    <h1>Welcome to the FastAPI Portfolio!</h1>
-    """
+def read_root(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="home.html",
+        context={"posts": posts},
+    )
+
 
 @app.get("/api/posts", response_class=JSONResponse)
 def get_posts():
