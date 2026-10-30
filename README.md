@@ -1,24 +1,26 @@
 # FastAPI Portfolio
 
-A portfolio-style blog homepage and JSON API built with FastAPI and Jinja templates. It demonstrates a package-based FastAPI application, server-rendered HTML, static assets, and interactive API documentation.
+A server-rendered portfolio blog built with FastAPI, Jinja templates, and Bootstrap. The project also exposes a small JSON API and custom HTML and JSON error responses.
 
 ## Features
 
-- Server-rendered homepage with a responsive Bootstrap layout
-- Blog posts served from the application
-- JSON posts endpoint
-- Local SVG profile pictures and site icons
-- Automatic Swagger UI and ReDoc documentation
-- Development auto-reload with FastAPI's CLI
+- Responsive Bootstrap blog layout
+- Home and `/posts` listing pages
+- Individual post pages at `/posts/{post_id}`
+- JSON endpoints for all posts and individual posts
+- Custom HTML pages for HTTP and validation errors
+- Package-relative templates and static assets
+- Local SVG profile pictures and icons
+- Interactive Swagger UI and ReDoc documentation
 
 ## Requirements
 
 - Python 3.14 or newer
-- [uv](https://docs.astral.sh/uv/) for dependency and environment management
+- [uv](https://docs.astral.sh/uv/) for dependency and virtual environment management
 
 ## Installation
 
-Clone the repository and install the project dependencies:
+Clone the repository and install dependencies:
 
 ```bash
 git clone https://github.com/rexShail/fastapi_portfolio.git
@@ -26,54 +28,87 @@ cd fastapi_portfolio
 uv sync
 ```
 
-## Run the application
+## Run locally
 
-Start the development server from the project directory:
+Start the development server:
 
 ```bash
 uv run fastapi dev main.py
 ```
 
-Open:
+Then open:
 
-- Homepage: http://127.0.0.1:8000/
+- Home page: http://127.0.0.1:8000/
+- Posts page: http://127.0.0.1:8000/posts
 - Swagger UI: http://127.0.0.1:8000/docs
 - ReDoc: http://127.0.0.1:8000/redoc
 - Posts API: http://127.0.0.1:8000/api/posts
 
-## API endpoints
+Stop the server with `Ctrl+C`.
+
+## Routes
+
+### HTML routes
 
 | Method | Path | Description |
 | --- | --- | --- |
-| `GET` | `/` | Portfolio and blog homepage |
-| `GET` | `/api/posts` | Return the list of blog posts as JSON |
-| `GET` | `/docs` | Interactive Swagger UI |
-| `GET` | `/redoc` | ReDoc API documentation |
+| `GET` | `/` | Blog home page |
+| `GET` | `/posts` | Blog post listing |
+| `GET` | `/posts/{post_id}` | Individual post page |
+
+### JSON API routes
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `GET` | `/api/posts` | Return all posts |
+| `GET` | `/api/posts/{post_id}` | Return one post |
+
+API documentation is available at `/docs`, and an alternative ReDoc view is available at `/redoc`.
+
+## Example API request
+
+```bash
+curl http://127.0.0.1:8000/api/posts/1
+```
+
+Example response:
+
+```json
+{
+  "id": 1,
+  "author": "Shail",
+  "title": "Building APIs Quickly with FastAPI",
+  "content": "FastAPI makes it simple to build fast, reliable APIs with automatic validation and clear documentation.",
+  "date_posted": "October 28, 2026"
+}
+```
 
 ## Project structure
 
 ```text
 fastapi_portfolio/
-├── main.py                         # FastAPI entry point
-├── pyproject.toml                  # Project metadata and dependencies
-├── src/
-│   └── fastapi_portfolio/
-│       ├── main.py                 # Application routes and sample data
-│       ├── templates/
-│       │   ├── layout.html         # Shared page layout
-│       │   └── home.html           # Homepage template
-│       └── static/
-│           ├── css/main.css        # Custom styles
-│           ├── icons/              # Favicon and app icons
-│           └── profile_pics/       # Author profile illustrations
+├── main.py
+├── pyproject.toml
+├── src/fastapi_portfolio/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── static/
+│   │   ├── css/
+│   │   ├── icons/
+│   │   └── profile_pics/
+│   └── templates/
+│       ├── layout.html
+│       ├── home.html
+│       ├── post.html
+│       └── error.html
 └── README.md
 ```
 
 ## Development
 
-FastAPI watches the project and reloads when source or template files change. Stop the server with `Ctrl+C`.
+The development server watches the project and reloads changed Python and template files automatically.
 
-If port `8000` is already occupied, start the server on another port:
+If port `8000` is already in use, select another port:
 
 ```bash
 uv run fastapi dev main.py --port 8001
@@ -81,4 +116,4 @@ uv run fastapi dev main.py --port 8001
 
 ## License
 
-This project does not yet include a license. Add one if you plan to publish or distribute the project.
+No license has been added yet.
