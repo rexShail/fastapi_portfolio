@@ -1,3 +1,5 @@
+from turtle import title
+
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -60,10 +62,17 @@ def read_root(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="home.html",
-        context={"posts": posts},
+        context={"posts": posts, "title": "Home - FastAPI Portfolio"},
     )
 
 
-@app.get("/api/posts", response_class=JSONResponse)
+@app.get("/posts", response_class=JSONResponse)
 def get_posts():
     return posts
+
+@app.get("/posts/{post_id}", response_class=JSONResponse)
+def get_post(post_id: int):
+    post = next((post for post in posts if post["id"] == post_id), None)
+    if post is None:
+        return JSONResponse(status_code=404, content={"message": "Post not found"})
+    return post 
